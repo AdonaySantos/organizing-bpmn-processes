@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import Repository from "./pages/Repository";
 import Recovery from "./pages/Recovery";
+import Teste from "./pages/Teste";
 import PrivateRoute from "./routes/PrivateRoute";
 import Home from './pages/Home';
 import './App.css';
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: '/recover-password',
         element: <Recovery />
+      },
+      {
+        path: '/teste',
+        element: <Teste />
       },
     ]
   }

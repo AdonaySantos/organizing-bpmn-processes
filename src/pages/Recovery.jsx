@@ -11,7 +11,7 @@ export default function Recovery({ setView }) { // Recebe setView como prop
     event.preventDefault();
     try {
       const response = await axios.post(
-        "https://49d8-2804-14d-788b-20da-796a-b823-77d7-3b5c.ngrok-free.app/forgot-password",
+        "https://backend-southstar.onrender.com/forgot-password",
         {
           name,
         }

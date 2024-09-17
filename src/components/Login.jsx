@@ -23,7 +23,7 @@ export default function Login({ setView }) {
     event.preventDefault();
     try {
       const response = await axios.post(
-        "https://49d8-2804-14d-788b-20da-796a-b823-77d7-3b5c.ngrok-free.app/login",
+        "https://backend-southstar.onrender.com/login",
         { name, password }
       );
 

@@ -20,7 +20,7 @@ export default function Repository() {
       navigate("/");
     } else {
       handleGetProcessos();
-      handleGetCadeias(); // Chama handleGetCadeias em vez de fetchCadeiasProcessos
+      handleGetCadeias();
     }
   }, [navigate]);
 
@@ -36,12 +36,15 @@ export default function Repository() {
     setProcessos([]);
 
     try {
-      const response = await fetch(`https://backend-southstar.onrender.com/processos/${searchTerm}`, {
-        headers: {
-          'Authorization': `Bearer ${authToken}`,
-          'Content-Type': 'application/json'
+      const response = await fetch(
+        `https://backend-southstar.onrender.com/processos/${searchTerm}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "application/json",
+          },
         }
-      });
+      );
 
       if (!response.ok) {
         throw new Error(`Erro na requisição: ${response.status}`);
@@ -63,23 +66,26 @@ export default function Repository() {
     const authToken = localStorage.getItem("authToken");
 
     try {
-        const response = await fetch('https://backend-southstar.onrender.com/processos', {
-            headers: {
-                'Authorization': `Bearer ${authToken}`,
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error(`Erro na requisição: ${response.status}`);
+      const response = await fetch(
+        "https://backend-southstar.onrender.com/processos",
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "application/json",
+          },
         }
+      );
 
-        const data = await response.json();
-        setProcessos(data);
-        setError(null); // Limpa mensagens de erro anteriores
+      if (!response.ok) {
+        throw new Error(`Erro na requisição: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setProcessos(data);
+      setError(null); // Limpa mensagens de erro anteriores
     } catch (error) {
-        console.error("Erro ao buscar processos:", error.message);
-        setError("Erro ao buscar processos");
+      console.error("Erro ao buscar processos:", error.message);
+      setError("Erro ao buscar processos");
     } finally {
       setLoading(false);
     }
@@ -130,7 +136,7 @@ export default function Repository() {
   return (
     <>
       <header className="header">
-        <div className="logo">
+        <div className="repository-logo">
           <h1>ProcessSync</h1>
         </div>
         {buttonsList.map((button) => (
@@ -138,67 +144,111 @@ export default function Repository() {
         ))}
       </header>
 
-      <div className="search-box">
-        <input 
-          type="text" 
-          className="search-txt" 
-          placeholder="Buscar" 
+      <h1 className="repository-page-title">Repositório de Processos</h1>
+      <div className="repository-search-box">
+        <input
+          type="text"
+          className="repository-search-txt"
+          placeholder="Buscar"
           value={searchTerm}
           onChange={(event) => setSearchTerm(event.target.value)}
         />
-        <button className="search-button" aria-label="Buscar" onClick={handleSearch}>
+        <button
+          className="repository-search-button"
+          aria-label="Buscar"
+          onClick={handleSearch}
+        >
           <FontAwesomeIcon icon={faSearch} />
         </button>
       </div>
 
-      <h1>Repositório de Processos</h1>
       <div className="repository-button">
-        <button onClick={() => toggleViewMode("processos")} className="todos-os-processos">
+        <button
+          onClick={() => toggleViewMode("processos")}
+          className="repository-todos-os-processos"
+        >
           Todos os Processos
         </button>
-        <button onClick={() => toggleViewMode("cadeias")} className="todos-os-processos">
+        <button
+          onClick={() => toggleViewMode("cadeias")}
+          className="repository-todos-os-processos"
+        >
           Cadeias
         </button>
       </div>
-      
-      <div className="processos-list">
+
+      <div className="repository-processos-list">
         {loading && <p>Carregando...</p>}
-        {error && <p className="error-message">{error}</p>}
-        {viewMode === "processos" && processos.length > 0 ? (
-          <ul>
+        {error && <p className="repository-error-message">{error}</p>}
+        {processos.length > 0 ? (
+          <div className="repository-processos-cards">
             {processos.map((processo) => (
-              <li key={processo.id}>
-                {processo.nome} - {processo.numero} - {processo.descricao}
-              </li>
+              <div className="repository-processo-card" key={processo.id}>
+                <h2>{processo.nome}</h2>
+                {processo.imagem && (
+                  <img
+                    src={`https://backend-southstar.onrender.com/processos/${processo.imagem}`} // URL da imagem
+                    alt={processo.nome}
+                    style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
+                  />
+                )}
+                <p>
+                  <strong>Número:</strong> {processo.numero}
+                </p>
+                <p>
+                  <strong>Descrição:</strong> {processo.descricao}
+                </p>
+                <p>
+                  <strong>Data:</strong> {processo.data}
+                </p>
+              </div>
             ))}
-          </ul>
+          </div>
         ) : (
           !loading
         )}
       </div>
 
-      <div className="cadeias-processos-list">
-        {viewMode === "cadeias" && error && <p className="error-message">{error}</p>}
-        {viewMode === "cadeias" && cadeiasProcessos.length > 0 ? (
-          <ul>
-            {cadeiasProcessos.map((cadeia) => (
-              <li key={cadeia.nomeCadeia}>
-                <h3>{cadeia.nomeCadeia}</h3>
-                <ul>
-                  {cadeia.processos.map((processo) => (
-                    <li key={processo.id}>
-                      {processo.nome} - {processo.numero} - {processo.descricao}{" "}
-                      - {processo.data}
-                    </li>
-                  ))}
-                </ul>
-              </li>
+      <div className="repository-cadeias-list">
+  {viewMode === "cadeias" && error && (
+    <p className="repository-error-message">{error}</p>
+  )}
+  {viewMode === "cadeias" && cadeiasProcessos.length > 0 ? (
+    <ul>
+      {cadeiasProcessos.map((cadeia) => (
+        <div key={cadeia.nomeCadeia}>
+          <h2 className="repository-cadeias-title">{cadeia.nomeCadeia}</h2>
+          <div className="repository-cadeias-processos">
+            {cadeia.processos.map((processo) => (
+              <div className="repository-processo-card" key={processo.id}>
+                <h2>{processo.nome}</h2>
+                {processo.imagem && (
+                  <img
+                    src={`https://backend-southstar.onrender.com/processos/${processo.imagem}`} // URL da imagem
+                    alt={processo.nome}
+                    style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
+                  />
+                )}
+                <p>
+                  <strong>Número:</strong> {processo.numero}
+                </p>
+                <p>
+                  <strong>Descrição:</strong> {processo.descricao}
+                </p>
+                <p>
+                  <strong>Data:</strong> {processo.data}
+                </p>
+              </div>
             ))}
-          </ul>
-        ) : (
-          !loading
-        )}
-      </div>
+          </div>
+        </div>
+      ))}
+    </ul>
+  ) : (
+    !loading
+  )}
+</div>
+
     </>
   );
 }

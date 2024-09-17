@@ -1,22 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
-
+/* Estilos do Header */
 header {
-  display: flex; 
+  display: flex;
   position: fixed;
-  height: 100%;
+  top: 0; 
+  left: 0; 
+  height: 100vh; 
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  color:#E8E5E0;
-  width: 70px;
+  color: #E8E5E0;
+  width: 70px; /* Largura do header */
   background-color: #0f0f0f;
+  box-sizing: border-box;
 }
 
 header h1 {
   font-family: "Montserrat", sans-serif;
-  color:rgb(175, 175, 175);
+  color: rgb(175, 175, 175);
   transform: rotate(-90deg);
-  margin-top: 130px;
+  margin-top: 100px;
   font-size: 20px;
 }
 
@@ -27,5 +29,14 @@ header h1 {
   text-decoration: none;
   display: flex;
   cursor: pointer;
-  transform: rotate(-90deg); /* Rotaciona o texto em 90 graus */
+  transform: rotate(-90deg);
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
 }
