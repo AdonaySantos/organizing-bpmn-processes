@@ -12,7 +12,7 @@ export default function Repository() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [viewMode, setViewMode] = useState("processos"); // Novo estado para alternar entre modos de exibição
+  const [viewMode, setViewMode] = useState(""); // Novo estado para alternar entre modos de exibição
 
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");
@@ -131,7 +131,13 @@ export default function Repository() {
     }
   };
 
-  const buttonsList = [{ nome: "Sair", handleClick: handleLogout }];
+  const buttonsList = [
+    { nome: "Sair", handleClick: handleLogout },
+  ];
+
+  const handleProcessClick = (processo) => {
+    navigate(`/repositorio-de-processos/${processo.nome}`);
+  };
 
   return (
     <>
@@ -167,7 +173,7 @@ export default function Repository() {
           onClick={() => toggleViewMode("processos")}
           className="repository-todos-os-processos"
         >
-          Todos os Processos
+          Processos
         </button>
         <button
           onClick={() => toggleViewMode("cadeias")}
@@ -180,16 +186,26 @@ export default function Repository() {
       <div className="repository-processos-list">
         {loading && <p>Carregando...</p>}
         {error && <p className="repository-error-message">{error}</p>}
-        {processos.length > 0 ? (
+        {viewMode === "processos" && error && (
+          <p className="repository-error-message">{error}</p>
+        )}
+        {viewMode === "processos" && processos.length > 0 ? (
           <div className="repository-processos-cards">
             {processos.map((processo) => (
-              <div className="repository-processo-card" key={processo.id}>
+              <div 
+                className="repository-processo-card" 
+                key={processo.id} 
+                onClick={() => handleProcessClick(processo)}>
                 <h2>{processo.nome}</h2>
                 {processo.imagem && (
                   <img
                     src={`https://backend-southstar.onrender.com/processos/${processo.imagem}`} // URL da imagem
                     alt={processo.nome}
-                    style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
+                    style={{
+                      width: "100%",
+                      height: "auto",
+                      borderRadius: "8px",
+                    }}
                   />
                 )}
                 <p>
@@ -210,45 +226,50 @@ export default function Repository() {
       </div>
 
       <div className="repository-cadeias-list">
-  {viewMode === "cadeias" && error && (
-    <p className="repository-error-message">{error}</p>
-  )}
-  {viewMode === "cadeias" && cadeiasProcessos.length > 0 ? (
-    <ul>
-      {cadeiasProcessos.map((cadeia) => (
-        <div key={cadeia.nomeCadeia}>
-          <h2 className="repository-cadeias-title">{cadeia.nomeCadeia}</h2>
-          <div className="repository-cadeias-processos">
-            {cadeia.processos.map((processo) => (
-              <div className="repository-processo-card" key={processo.id}>
-                <h2>{processo.nome}</h2>
-                {processo.imagem && (
-                  <img
-                    src={`https://backend-southstar.onrender.com/processos/${processo.imagem}`} // URL da imagem
-                    alt={processo.nome}
-                    style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
-                  />
-                )}
-                <p>
-                  <strong>Número:</strong> {processo.numero}
-                </p>
-                <p>
-                  <strong>Descrição:</strong> {processo.descricao}
-                </p>
-                <p>
-                  <strong>Data:</strong> {processo.data}
-                </p>
+        {viewMode === "cadeias" && error && (
+          <p className="repository-error-message">{error}</p>
+        )}
+        {viewMode === "cadeias" && cadeiasProcessos.length > 0 ? (
+          <ul>
+            {cadeiasProcessos.map((cadeia) => (
+              <div key={cadeia.nomeCadeia}>
+                <h2 className="repository-cadeias-title">
+                  {cadeia.nomeCadeia}
+                </h2>
+                <div className="repository-cadeias-processos">
+                  {cadeia.processos.map((processo) => (
+                    <div className="repository-processo-card" key={processo.id} onClick={() => handleProcessClick(processo)}>
+                      <h2>{processo.nome}</h2>
+                      {processo.imagem && (
+                        <img
+                          src={`https://backend-southstar.onrender.com/processos/${processo.imagem}`} // URL da imagem
+                          alt={processo.nome}
+                          style={{
+                            width: "100%",
+                            height: "auto",
+                            borderRadius: "8px",
+                          }}
+                        />
+                      )}
+                      <p>
+                        <strong>Número:</strong> {processo.numero}
+                      </p>
+                      <p>
+                        <strong>Descrição:</strong> {processo.descricao}
+                      </p>
+                      <p>
+                        <strong>Data:</strong> {processo.data}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
-          </div>
-        </div>
-      ))}
-    </ul>
-  ) : (
-    !loading
-  )}
-</div>
-
+          </ul>
+        ) : (
+          !loading
+        )}
+      </div>
     </>
   );
 }

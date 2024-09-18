@@ -1,14 +1,20 @@
+/* Título da Página */
+.repository-page-title {
+  display: flex;
+}
+
+/* Caixa de Busca */
 .repository-search-box {
   position: relative;
-  margin: 20px auto;
-  max-width: 600px;
+  margin: 20px 0; /* Remove a margem lateral */
+  max-width: 500px;
   background: #0f0f0f;
   height: 55px;
   border-radius: 55px;
   padding: 12.5px;
   display: flex;
   align-items: center;
-  transition: 0.3s ease-in-out; 
+  transition: 0.3s ease-in-out;
 }
 
 .repository-search-button {
@@ -20,7 +26,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: 0.4s ease-in-out; 
+  transition: 0.4s ease-in-out;
   border: none;
   cursor: pointer;
 }
@@ -47,26 +53,27 @@
   width: 0;
 }
 
-
+/* Botões */
 .repository-button {
-  text-align: center;
-  margin: 20px;
+  text-align: left; /* Alinha o conteúdo à esquerda */
+  margin: 20px 0; /* Remove a margem lateral */
 }
 
 .repository-todos-os-processos {
-  background: #322a25; 
+  background: #322a25;
   color: #fff;
   border: none;
   padding: 10px 20px;
-  margin: 10px;
+  margin: 10px; /* Remove a margem lateral */
   border-radius: 5px;
   cursor: pointer;
-  transition: 0.3s ease-in-out; 
+  transition: 0.3s ease-in-out;
 }
 
 .repository-todos-os-processos:hover {
-  background: #6f3c12; 
+  background: #2c190a;
 }
+
 
 /* Alinhamento dos processos à esquerda */
 .repository-processos-list,
@@ -90,6 +97,7 @@
   border-radius: 8px;
   padding: 15px;
   margin: 20px 0px 20px 0px;
+  cursor: pointer;
   width: 250px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.641);
   transition: 0.3s ease-in-out;
@@ -113,7 +121,7 @@
 
 .repository-cadeias-title {
   font-size: 2rem;
-  color: #6f3c12;
+  color: #381f0a;
   margin: 15px;
   font-weight: bold;
   text-align: left; /* Alinha o título à esquerda */
