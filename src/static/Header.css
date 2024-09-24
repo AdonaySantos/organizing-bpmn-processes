@@ -18,16 +18,15 @@ header h1 {
   font-family: "Montserrat", sans-serif;
   color: rgb(175, 175, 175);
   transform: rotate(-90deg);
-  margin: 100px 0px 300px 0px;
+  margin: 100px 0px 600px 0px;
   font-size: 20px;
 }
 
 .links-nav button {
   all: unset;
   font-family: "Montserrat", sans-serif;
-  margin-bottom: 70px;
+  margin-bottom: 100px;
   text-decoration: none;
-  
   cursor: pointer;
   transform: rotate(-90deg);
 }

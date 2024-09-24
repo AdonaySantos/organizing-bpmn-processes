@@ -131,9 +131,7 @@ export default function Repository() {
     }
   };
 
-  const buttonsList = [
-    { nome: "Sair", handleClick: handleLogout },
-  ];
+  const buttonsList = [{ nome: "Sair", handleClick: handleLogout },];
 
   const handleProcessClick = (processo) => {
     navigate(`/repositorio-de-processos/${processo.nome}`);
@@ -150,125 +148,132 @@ export default function Repository() {
         ))}
       </header>
 
-      <h1 className="repository-page-title">Repositório de Processos</h1>
-      <div className="repository-search-box">
-        <input
-          type="text"
-          className="repository-search-txt"
-          placeholder="Buscar"
-          value={searchTerm}
-          onChange={(event) => setSearchTerm(event.target.value)}
-        />
-        <button
-          className="repository-search-button"
-          aria-label="Buscar"
-          onClick={handleSearch}
-        >
-          <FontAwesomeIcon icon={faSearch} />
-        </button>
-      </div>
+      <div className="main-content">
+        <h1 className="repository-page-title">Repositório de Processos</h1>
+        <div className="repository-search-box">
+          <input
+            type="text"
+            className="repository-search-txt"
+            placeholder="Buscar"
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
+          />
+          <button
+            className="repository-search-button"
+            aria-label="Buscar"
+            onClick={handleSearch}
+          >
+            <FontAwesomeIcon icon={faSearch} />
+          </button>
+        </div>
 
-      <div className="repository-button">
-        <button
-          onClick={() => toggleViewMode("processos")}
-          className="repository-todos-os-processos"
-        >
-          Processos
-        </button>
-        <button
-          onClick={() => toggleViewMode("cadeias")}
-          className="repository-todos-os-processos"
-        >
-          Cadeias
-        </button>
-      </div>
+        <div className="repository-button">
+          <button
+            onClick={() => toggleViewMode("processos")}
+            className="repository-todos-os-processos"
+          >
+            Processos
+          </button>
+          <button
+            onClick={() => toggleViewMode("cadeias")}
+            className="repository-todos-os-processos"
+          >
+            Cadeias
+          </button>
+        </div>
 
-      <div className="repository-processos-list">
-        {loading && <p>Carregando...</p>}
-        {error && <p className="repository-error-message">{error}</p>}
-        {viewMode === "processos" && error && (
-          <p className="repository-error-message">{error}</p>
-        )}
-        {viewMode === "processos" && processos.length > 0 ? (
-          <div className="repository-processos-cards">
-            {processos.map((processo) => (
-              <div 
-                className="repository-processo-card" 
-                key={processo.id} 
-                onClick={() => handleProcessClick(processo)}>
-                <h2>{processo.nome}</h2>
-                {processo.imagem && (
-                  <img
-                    src={`https://backend-southstar.onrender.com/processos/${processo.imagem}`} // URL da imagem
-                    alt={processo.nome}
-                    style={{
-                      width: "100%",
-                      height: "auto",
-                      borderRadius: "8px",
-                    }}
-                  />
-                )}
-                <p>
-                  <strong>Número:</strong> {processo.numero}
-                </p>
-                <p>
-                  <strong>Descrição:</strong> {processo.descricao}
-                </p>
-                <p>
-                  <strong>Data:</strong> {processo.data}
-                </p>
-              </div>
-            ))}
-          </div>
-        ) : (
-          !loading
-        )}
-      </div>
-
-      <div className="repository-cadeias-list">
-        {viewMode === "cadeias" && error && (
-          <p className="repository-error-message">{error}</p>
-        )}
-        {viewMode === "cadeias" && cadeiasProcessos.length > 0 ? (
-          <ul>
-            {cadeiasProcessos.map((cadeia) => (
-              <div key={cadeia.nomeCadeia}>
-                <h2 className="repository-cadeias-title">
-                  {cadeia.nomeCadeia}
-                </h2>
-                <div className="repository-cadeias-processos">
-                  {cadeia.processos.map((processo) => (
-                    <div className="repository-processo-card" key={processo.id} onClick={() => handleProcessClick(processo)}>
-                      <h2>{processo.nome}</h2>
-                      {processo.imagem && (
-                        <img
-                          src={`https://backend-southstar.onrender.com/processos/${processo.imagem}`} // URL da imagem
-                          alt={processo.nome}
-                          style={{
-                            width: "100%",
-                            height: "auto",
-                            borderRadius: "8px",
-                          }}
-                        />
-                      )}
-                      <p>
-                        <strong>Número:</strong> {processo.numero}
-                      </p>
-                      <p>
-                        <strong>Descrição:</strong> {processo.descricao}
-                      </p>
-                      <p>
-                        <strong>Data:</strong> {processo.data}
-                      </p>
-                    </div>
-                  ))}
+        <div className="repository-processos-list">
+          {loading && <p>Carregando...</p>}
+          {error && <p className="repository-error-message">{error}</p>}
+          {viewMode === "processos" && error && (
+            <p className="repository-error-message">{error}</p>
+          )}
+          {viewMode === "processos" && processos.length > 0 ? (
+            <div className="repository-processos-cards">
+              {processos.map((processo) => (
+                <div
+                  className="repository-processo-card"
+                  key={processo.id}
+                  onClick={() => handleProcessClick(processo)}
+                >
+                  <h2>{processo.nome}</h2>
+                  {processo.imagem && (
+                    <img
+                      src={`https://backend-southstar.onrender.com/processos/${processo.imagem}`} // URL da imagem
+                      alt={processo.nome}
+                      style={{
+                        width: "100%",
+                        height: "auto",
+                        borderRadius: "8px",
+                      }}
+                    />
+                  )}
+                  <p>
+                    <strong>Número:</strong> {processo.numero}
+                  </p>
+                  <p>
+                    <strong>Descrição:</strong> {processo.descricao}
+                  </p>
+                  <p>
+                    <strong>Data:</strong> {processo.data}
+                  </p>
                 </div>
-              </div>
-            ))}
-          </ul>
-        ) : (
-          !loading
-        )}
+              ))}
+            </div>
+          ) : (
+            !loading
+          )}
+        </div>
+
+        <div className="repository-cadeias-list">
+          {viewMode === "cadeias" && error && (
+            <p className="repository-error-message">{error}</p>
+          )}
+          {viewMode === "cadeias" && cadeiasProcessos.length > 0 ? (
+            <ul>
+              {cadeiasProcessos.map((cadeia) => (
+                <div key={cadeia.nomeCadeia}>
+                  <h2 className="repository-cadeias-title">
+                    {cadeia.nomeCadeia}
+                  </h2>
+                  <div className="repository-cadeias-processos">
+                    {cadeia.processos.map((processo) => (
+                      <div
+                        className="repository-processo-card"
+                        key={processo.id}
+                        onClick={() => handleProcessClick(processo)}
+                      >
+                        <h2>{processo.nome}</h2>
+                        {processo.imagem && (
+                          <img
+                            src={`https://backend-southstar.onrender.com/processos/${processo.imagem}`} // URL da imagem
+                            alt={processo.nome}
+                            style={{
+                              width: "100%",
+                              height: "auto",
+                              borderRadius: "8px",
+                            }}
+                          />
+                        )}
+                        <p>
+                          <strong>Número:</strong> {processo.numero}
+                        </p>
+                        <p>
+                          <strong>Descrição:</strong> {processo.descricao}
+                        </p>
+                        <p>
+                          <strong>Data:</strong> {processo.data}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </ul>
+          ) : (
+            !loading
+          )}
+        </div>
       </div>
     </>
   );

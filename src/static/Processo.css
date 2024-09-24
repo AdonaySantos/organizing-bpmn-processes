@@ -1,0 +1,47 @@
+.process-content{
+    margin-left: 30%;
+  }
+
+
+.processo-details h1 {
+    font-family: 'Arial', sans-serif;
+    font-size: 60px;
+    color: #322a25;
+    margin: 30px 0px; 
+    text-align: left;
+}
+
+
+.processo-details img {
+    width: 80%; 
+    height: auto; 
+    margin: 0 auto 10px auto; 
+    display: block; 
+    border-radius: 10px;
+    object-fit: cover; 
+    width: "110%";
+    height: "100";
+    border-radius: "8px";
+
+}
+.processo-details p {
+    font-family: 'Arial', sans-serif;
+    font-size: 25px;
+    margin: 10px 0;
+    width: 100%;
+    text-align: left; 
+}
+
+
+.processo-details p strong {
+    color:#322a25;
+    
+}
+
+
+.repository-error-message {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+}

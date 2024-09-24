@@ -10,6 +10,9 @@
 body {
   display: flex;
   background-color: #E8E5E0;
+}
+
+.main-content{
   margin-left: 180px;
 }
 
