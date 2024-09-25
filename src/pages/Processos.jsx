@@ -40,12 +40,12 @@ export default function Processos() {
     return (
         <>
             <header className="header">
-                <div className="repository-logo">
-                    <h1>ProcessSync</h1>
+                <h1>ProcessSync</h1>
+                <div className="links-nav">
+                    {buttonsList.map((button) => (
+                        <Header key={button.nome} item={button} />
+                    ))}
                 </div>
-                {buttonsList.map((button) => (
-                    <Header key={button.nome} item={button} />
-                ))}
             </header>
 
 

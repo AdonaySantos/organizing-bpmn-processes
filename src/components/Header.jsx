@@ -4,9 +4,7 @@ export default function Header(props) {
 
   return (
     <>
-      <div className="links-nav">
-        <button onClick={props.item.handleClick}>{props.item.nome}</button>
-      </div>
+      <button onClick={props.item.handleClick}>{props.item.nome}</button>
     </>
   );
 }

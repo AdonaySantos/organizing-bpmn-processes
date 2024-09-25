@@ -13,7 +13,8 @@ body {
 }
 
 .main-content{
-  margin-left: 180px;
+  margin-left: 160px;
+  padding: 20px;
 }
 
 h1, h2, p, a, label, input, button {
