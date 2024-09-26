@@ -1,8 +1,8 @@
-// Login.js
 import axios from "axios";
-import { useState, useEffect } from "react";
-import copy from "../assets/copy.svg";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import copy from "../assets/copy.svg";
+import '../static/Home.css';
 
 export default function Login({ setView }) {
   const [name, setName] = useState("");
@@ -14,7 +14,6 @@ export default function Login({ setView }) {
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");
     if (authToken) {
-      // Se o usuário já estiver logado, redireciona para outra página
       navigate("/repositorio-de-processos");
     }
   }, [navigate]);
