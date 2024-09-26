@@ -1,9 +1,9 @@
 import axios from "axios";
-import copy from '../assets/copy.svg';
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import copy from '../assets/copy.svg';
 
-export default function Recovery({ setView }) { // Recebe setView como prop
+export default function RecoverPassword({ setView }) { // Recebe setView como prop
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
 
