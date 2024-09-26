@@ -1,4 +1,4 @@
-.main-container::before {
+.entry::before {
   --size: 30px;
   --line: color-mix(in lch, rgb(85, 45, 45), transparent 0%);
   content: '';
