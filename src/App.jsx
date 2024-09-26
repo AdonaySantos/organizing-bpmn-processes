@@ -1,12 +1,12 @@
 import React from "react";
-import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
+import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import Repository from "./pages/Repository";
-import Recovery from "./pages/Recovery";
-import PrivateRoute from "./routes/PrivateRoute";
-import Home from './pages/Home';
-import Processos from "./pages/Processos";
 import './App.css';
+import Login from './pages/Login';
+import Processos from "./pages/Processos";
+import RecoverPassword from "./pages/RecoverPassword";
+import Repository from "./pages/Repository";
+import PrivateRoute from "./routes/PrivateRoute";
 
 // Criação do roteador com as rotas definidas
 const router = createBrowserRouter([
@@ -21,11 +21,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Home />
+        element: <Login />
       },
       {
         path: '/recover-password',
-        element: <Recovery />
+        element: <RecoverPassword />
       },
       {
         path: '/repositorio-de-processos',
