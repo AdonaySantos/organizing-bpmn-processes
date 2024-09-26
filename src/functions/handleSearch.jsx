@@ -1,11 +1,12 @@
-// functions/getCadeias.js
-export const handleGetCadeias = async (setCadeiasProcessos, setLoading, setError) => {
-    setLoading(true);
+export const handleSearch = async (searchTerm, setProcessos, setLoading, setError) => {
     const authToken = localStorage.getItem("authToken");
+    setLoading(true);
+    setError("");
+    setProcessos([]);
   
     try {
       const response = await fetch(
-        "https://backend-southstar.onrender.com/cadeias-com-processos",
+        `https://backend-southstar.onrender.com/processos/${searchTerm}`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -19,11 +20,11 @@ export const handleGetCadeias = async (setCadeiasProcessos, setLoading, setError
       }
   
       const data = await response.json();
-      setCadeiasProcessos(data); // Armazena as cadeias no estado
-      setError(null); // Limpa mensagens de erro anteriores
+      setProcessos(data);
+      setError(null);
     } catch (error) {
-      console.error("Erro ao buscar cadeias de processos:", error.message);
-      setError("Erro ao buscar cadeias de processos");
+      console.error("Erro ao buscar processos:", error.message);
+      setError("Nenhum processo encontrado.");
     } finally {
       setLoading(false);
     }

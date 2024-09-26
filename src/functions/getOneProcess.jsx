@@ -1,4 +1,3 @@
-// functions/getProcessoByName.js
 export const getOneProcess = async (processoNome, authToken) => {
     try {
       const response = await fetch(

@@ -1,19 +1,16 @@
-// functions/search.js
-export const handleSearch = async (searchTerm, setProcessos, setLoading, setError) => {
-    const authToken = localStorage.getItem("authToken");
+export const handleGetProcessos = async (setProcessos, setLoading, setError) => {
     setLoading(true);
-    setError("");
-    setProcessos([]);
+    const authToken = localStorage.getItem("authToken");
   
     try {
       const response = await fetch(
-        `https://backend-southstar.onrender.com/processos/${searchTerm}`,
+        "https://backend-southstar.onrender.com/processos",
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
             "Content-Type": "application/json",
           },
-        }
+        } //adicionar ao back end a verificação do authToken
       );
   
       if (!response.ok) {
@@ -22,10 +19,10 @@ export const handleSearch = async (searchTerm, setProcessos, setLoading, setErro
   
       const data = await response.json();
       setProcessos(data);
-      setError(null);
+      setError(null); // Limpa mensagens de erro anteriores
     } catch (error) {
       console.error("Erro ao buscar processos:", error.message);
-      setError("Nenhum processo encontrado.");
+      setError("Erro ao buscar processos");
     } finally {
       setLoading(false);
     }
