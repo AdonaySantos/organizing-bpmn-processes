@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
-import { getOneProcess } from "../functions/getOneProcess";
-import { handleLogout } from "../functions/logout";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
+import { getOneProcess } from "../functions/getOneProcess";
+import { handleLogout } from "../functions/handleLogout";
 import "../static/Processo.css";
 
 export default function Processos() {
