@@ -38,8 +38,10 @@ form {
     width: 100vw;/*width=largura e 100vw=100% da tela*/
     height: 100vh;/*height=altura*/
     display: flex; /*faz com que as coisas fiquem lado a lado*/
-    justify-content: center; /*centraliza  as coisas no eixo X*/
+    justify-content: space-between; /*centraliza  as coisas no eixo X*/
     align-items: center; /*centraliza as coisas no eixo Y*/
+    padding: 0 20px;
+    box-sizing: border-box;
   }
   
   .left-container{
@@ -48,7 +50,7 @@ form {
     height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: left;
+    align-items: flex-start;
     flex-direction: column; 
   }
   
@@ -143,6 +145,28 @@ form {
   }
   
   @media only screen and (max-width:950px){
+
+    .entry {
+      flex-direction: column; /* Muda para coluna em telas menores */
+      justify-content: center;
+      align-items: center;
+    }
+  
+    .left-container,
+    .right-container {
+      width: 100%; /* Ocupa 100% da largura */
+      margin-bottom: 20px; /* Espaçamento entre os containers */
+      height: auto; /* Altura ajustada pelo conteúdo */
+    }
+  
+    .animated {
+      width: 60vw; /* Ajusta a largura da animação */
+    }
+  
+    .card-container {
+      width: 85%;
+    }
+    
     .card-login{
       width: 85%;
     }
@@ -172,6 +196,10 @@ form {
     }
     
     .card-login{
+      width: 90%;
+    }
+
+    .card-container {
       width: 90%;
     }
   }

@@ -33,7 +33,7 @@ export default function Processos() {
 
     const buttonsList = [
       { nome: "Repositório", handleClick: () => navigate("/repositorio-de-processos")},
-      { nome: "Sair", handleClick: handleLogout },
+      { nome: "Sair", handleClick: () => handleLogout(navigate) }
     ];
 
     return (
@@ -62,11 +62,6 @@ export default function Processos() {
                                     className = "img-content"
                                     src={`https://backend-southstar.onrender.com/processos/${processo.imagem}`} // URL da imagem
                                     alt={processo.nome}
-                                    style={{
-                                        width: "1100px",
-                                        height: "100",
-                                        borderRadius: "8px",
-                                    }}
                                 />
                             )}
                             <p>

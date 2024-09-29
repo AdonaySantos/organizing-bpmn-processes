@@ -1,29 +1,31 @@
 .process-content{
-    margin-left: 30%;
+    margin-left: 20%;
+    padding: 20px;
+    align-items: center;
+    justify-content: center; 
+    min-height: 100vh;
+    flex-direction: column;
   }
 
 
 .processo-details h1 {
     font-family: 'Arial', sans-serif;
-    font-size: 60px;
+    font-size: 40px;
     color: #322a25;
-    padding: 30px 0;
+    padding: 10px 0;
     text-align: left;
 }
 
 
 .processo-details img {
-    width: 80%; 
-    height: auto; 
+    width: 100%; /* Para que a imagem ocupe a largura correta */
+    height: auto; /* Para manter a proporção */
     margin: 0 auto 10px auto; 
     display: block; 
     border-radius: 10px;
-    object-fit: cover; 
-    width: "110%";
-    height: "100";
-    border-radius: "8px";
-
+    object-fit: cover; /* Faz com que a imagem se ajuste sem distorção */
 }
+
 .processo-details p {
     font-family: 'Arial', sans-serif;
     font-size: 25px;
@@ -44,4 +46,44 @@
     font-weight: bold;
     text-align: center;
     margin-top: 20px;
+}
+
+/* Responsividade para telas menores */
+@media only screen and (max-width: 768px) {
+    .process-content {
+        margin-left: 10%;
+    }
+
+    .processo-details h1 {
+        font-size: 32px;
+        margin-left: 10%;
+    }
+
+    .processo-details p {
+        font-size: 16px;
+        margin-left: 10%;
+    }
+
+    .processo-details img {
+        width: 90%; /* A imagem será 90% da largura do container */
+        margin-left: 10%;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .process-content {
+        margin-left: 5%;
+    }
+
+    .processo-details h1 {
+        font-size: 28px;
+    }
+
+    .processo-details p {
+        font-size: 14px;
+    }
+
+    .processo-details img {
+        width: 80%; /* A imagem será 80% da largura do container em telas muito pequenas */
+    }
 }
