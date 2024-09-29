@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import ProcessCard from "../components/ProcessCard";
-import { handleAdminArea } from "../functions/handleGetAdminArea";
+import { handleAdminArea } from "../functions/handleAdminArea";
 import { handleGetCadeias } from "../functions/handleGetCadeias";
 import { handleGetDepartamentos } from "../functions/handleGetDepartamentos";
 import { handleGetInativos } from "../functions/handleGetInativos";
@@ -41,7 +41,7 @@ export default function Repository() {
   }, [navigate]);
 
   const buttonsList = [
-    { nome: "Administração", handleClick: handleAdminArea },
+    { nome: "Administração", handleClick: () => handleAdminArea(navigate) },
     { nome: "Sair", handleClick: () => handleLogout(navigate) },
   ];
 

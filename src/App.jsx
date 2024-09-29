@@ -3,6 +3,7 @@ import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import './App.css';
 import Login from './pages/Login';
+import Admin from "./pages/Admin";
 import Processos from "./pages/Processos";
 import RecoverPassword from "./pages/RecoverPassword";
 import Repository from "./pages/Repository";
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: '/repositorio-de-processos/:processoNome',
         element: <Processos />
+      },
+      {
+        path: '/administração',
+        element: <Admin />
       },
     ]
   }
