@@ -59,9 +59,9 @@
   margin: 20px 0; /* Remove a margem lateral */
 }
 
-.repository-todos-os-processos {
-  background: #322a25;
-  color: #fff;
+.repository-processos {
+  background: #beb9b4;
+  color: #000;
   border: none;
   padding: 10px 20px;
   margin: 10px; /* Remove a margem lateral */
@@ -70,8 +70,9 @@
   transition: 0.3s ease-in-out;
 }
 
-.repository-todos-os-processos:hover {
+.repository-processos:hover {
   background: #2c190a;
+  color: #ddd;
 }
 
 
@@ -84,7 +85,9 @@
 }
 
 .repository-processos-cards,
-.repository-cadeias-processos {
+.repository-cadeias-processos,
+.repository-inativos-list,
+.repository-interdepartamentais-processos {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
@@ -104,7 +107,7 @@
 }
 
 .repository-processo-card:hover {
-  background-color: #e0e0e0;
+  background-color: #beb9b4;
   transform: scale(1.05);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.286);
 }
