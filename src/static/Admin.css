@@ -1,0 +1,40 @@
+/* Estilos para ocultar o modal por padrão */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Estilos do conteúdo do modal */
+.modal-content {
+  width: 60%; /*60% da div*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 30px 35px; /*espaço entre a borda e o conteudo do site*/
+  background: #221b1b;
+  color: white;
+  border-radius: 20px; /*para a borda*/
+  box-shadow: 0px 10px 40px #00000056; /*sombra do card*/
+}
+
+/* Botão de fechar o modal */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
