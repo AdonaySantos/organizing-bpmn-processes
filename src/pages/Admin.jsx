@@ -11,6 +11,7 @@ export default function Admin() {
   const [error, setError] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const [permission, setPermission] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,7 +22,7 @@ export default function Admin() {
 
     // Quando o botão é clicado, abre o modal
     const open = () => {
-      modal.style.display = "block";
+      modal.style.display = "flex";
     };
 
     // Quando o botão de fechar é clicado, fecha o modal
@@ -94,7 +95,7 @@ export default function Admin() {
         </div>
       </header>
       <div className="main-content">
-        <h1>Administração</h1>
+        <h1 className="repository-page-title">Administração</h1>
         {/* Coloque aqui o restante do conteúdo da página de administração */}
 
         <div className="repositor-button">
@@ -103,6 +104,16 @@ export default function Admin() {
             className="repository-processos"
           >
             Cadastrar User
+          </button>
+          <button 
+            className="repository-processos"
+            >
+            Editar User
+          </button>
+          <button 
+            className="repository-processos"
+            >
+            Desativar User
           </button>
         </div>
 
@@ -115,7 +126,7 @@ export default function Admin() {
               &times;
             </span>
             <h1>Cadastro</h1>
-            <form onSubmit={() => handleGetUser(name, password)}>
+            <form onSubmit={(e) => handleGetUser(e, name, password, permission, setMessage)}>
               <div className="textfield">
                 <label htmlFor="nome">Nome</label>
                 <input
@@ -133,6 +144,16 @@ export default function Admin() {
                   placeholder="Senha"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="textfield">
+                <label htmlFor="permission">Permissão</label>
+                <input
+                  type="text"
+                  placeholder="Permissão"
+                  value={permission}
+                  onChange={(e) => setPermission(e.target.value)}
                   required
                 />
               </div>
