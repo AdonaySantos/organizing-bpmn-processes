@@ -13,36 +13,30 @@ export default function Admin() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-
-  // Quando o botão é clicado, abre o modal
-  const open = () => {
-    modal.style.display = "block";
-  };
-
-  // Quando o botão de fechar é clicado, fecha o modal
-  const close = () => {
-    modal.style.display = "none";
-  };
-
   useEffect(() => {
+    // Seleciona os elementos necessários
     const modal = document.getElementById("modal");
     const openModalBtn = document.getElementById("openModalBtn");
     const closeModalBtn = document.getElementById("closeModalBtn");
 
+    // Quando o botão é clicado, abre o modal
     const open = () => {
       modal.style.display = "block";
     };
 
+    // Quando o botão de fechar é clicado, fecha o modal
     const close = () => {
       modal.style.display = "none";
     };
 
-    const windowClickHandler = (e) => {
-      if(event.target === modal) {
-        modalstyle.display = "none"
+    // Fecha o modal se o usuário clicar fora dele
+    const windowClickHandler = (event) => {
+      if (event.target === modal) {
+        modal.style.display = "none";
       }
-    }
+    };
 
+    // Adiciona os event listeners
     openModalBtn.addEventListener("click", open);
     closeModalBtn.addEventListener("click", close);
     window.addEventListener("click", windowClickHandler);
@@ -104,22 +98,20 @@ export default function Admin() {
         {/* Coloque aqui o restante do conteúdo da página de administração */}
 
         <div className="repositor-button">
-          <button 
-            id="openModalBtn" 
+          <button
+            id="openModalBtn"
             className="repository-processos"
-            onClick={open}
-            >
+          >
             Cadastrar User
           </button>
         </div>
 
         <div id="modal" className="modal">
           <div className="modal-content">
-            <span 
-              id="closeModalBtn" 
-              class="close"
-              onClick={close}
-              >
+            <span
+              id="closeModalBtn"
+              className="close"
+            >
               &times;
             </span>
             <h1>Cadastro</h1>
