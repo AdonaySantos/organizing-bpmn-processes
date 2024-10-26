@@ -1,42 +1,61 @@
 /* Estilos para ocultar o modal por padrão */
 .modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
+  display: none; /* Oculta o modal por padrão */
+  position: fixed; /* Fixa o modal na tela */
+  z-index: 1; /* Coloca o modal acima de outros elementos */
+  left: 0; /* Alinha à esquerda */
+  top: 0; /* Alinha ao topo */
+  width: 100%; /* Largura total */
+  height: 100%; /* Altura total */
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center; /* Centraliza verticalmente */
+  background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro com transparência */
 }
 
 /* Estilos do conteúdo do modal */
 .modal-content {
-  width: 35%; /*60% da div*/
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  padding: 30px 35px; /*espaço entre a borda e o conteudo do site*/
-  background: #221b1b;
-  color: white;
-  border-radius: 20px; /*para a borda*/
-  box-shadow: 0px 10px 40px #00000056; /*sombra do card*/
-  position: relative;
+  width: 35%; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  flex-direction: column; 
+  padding: 30px 35px; 
+  background: #221b1b; 
+  color: white; 
+  border-radius: 20px; 
+  box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.35); 
+  position: relative; 
 }
 
-.modal-content, h1 {
-margin-top: 10px;
+/* Margem para o título */
+.modal-content h1 {
+  margin-top: 10px; /* Espaçamento acima do título */
 }
 
 /* Botão de fechar o modal */
 .close {
-  position: absolute;
-  top: 15px;  /* Ajuste vertical */
+  position: absolute; 
+  top: 15px; 
   right: 30px; /* Alinhar na direita */
-  font-size: 35px;
-  color: #aaa;
+  font-size: 35px; 
+  color: #aaa; 
+  cursor: pointer; 
+}
+
+.close:hover {
+  color: white; 
+}
+
+/* Estilos para os botões */
+.btn {
+  width: 100%;
+  margin: 15px 0px;
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  letter-spacing: 3px; 
+  color: #fffffff3;
+  background: #443227;
   cursor: pointer;
 }
