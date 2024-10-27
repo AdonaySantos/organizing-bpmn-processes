@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import '../static/CreateProcess.css'
+import "../static/CreateProcess.css";
 import axios from "axios";
+import Header from "../components/Header";
+import { handleAdminArea } from "../functions/handleAdminArea";
+import { handleLogout } from "../functions/handleLogout";
 
 export default function CreateProcess() {
   const [error, setError] = useState("");
@@ -34,8 +37,22 @@ export default function CreateProcess() {
     fetchAdminData(); // Executa a função assim que o componente é montado
   }, [navigate]);
 
+  const buttonsList = [
+    { nome: "Administração", handleClick: () => handleAdminArea(navigate) },
+    { nome: "Repositório", handleClick: () => navigate("/repositorio-de-processos") },
+    { nome: "Sair", handleClick: () => handleLogout(navigate) },
+  ];
+
   return (
     <>
+      <header className="header">
+        <h1>ProcessSync</h1>
+        <div className="links-nav">
+          {buttonsList.map((button) => (
+            <Header key={button.nome} item={button} />
+          ))}
+        </div>
+      </header>
       <h1>olá mundo</h1>
     </>
   );

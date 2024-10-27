@@ -25,10 +25,12 @@ export default function Admin() {
     const modal = document.getElementById("modal");
     const editModal = document.getElementById("editModal");
     const deactivateModal = document.getElementById("deactivateModal");
+    const deactivateProcessModal = document.getElementById("deactivateProcessModal")
 
     const openModalBtn = document.getElementById("openModalBtn");
     const openEditModalBtn = document.getElementById("openEditModalBtn");
     const openDeactivateModalBtn = document.getElementById("openDeactivateModalBtn");
+    const openDeactivateProcessModalBtn = document.getElementById("openDeactivateProcessModalBtn")
 
     const closeModalBtn = document.getElementById("closeModalBtn");
     const closeEditModalBtn = document.getElementById("closeEditModalBtn");
@@ -53,10 +55,12 @@ export default function Admin() {
     openModalBtn.addEventListener("click", () => open(modal));
     openEditModalBtn.addEventListener("click", () => open(editModal));
     openDeactivateModalBtn.addEventListener("click", () => open(deactivateModal));
+    openDeactivateProcessModalBtn.addEventListener("click", () => open(deactivateProcessModal))
 
     closeModalBtn.addEventListener("click", () => close(modal));
     closeEditModalBtn.addEventListener("click", () => close(editModal));
     closeDeactivateModalBtn.addEventListener("click", () => close(deactivateModal));
+    deactivateProcessModal.addEventListener("click", () => close(deactivateProcessModal))
 
     window.addEventListener("click", windowClickHandler);
 
@@ -139,6 +143,12 @@ export default function Admin() {
             className="repository-processos"
           >
             Desativar User
+          </button>
+          <button 
+            id="openDeactivateProcessModalBtn"
+            className="repository-processos"
+          >
+            Desativar Process
           </button>
           <button 
             id="openCreateProcessPage"
@@ -261,6 +271,28 @@ export default function Admin() {
                 <input
                   type="text"
                   placeholder="Nome do Usuário"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </div>
+              <button type="submit" className="button-right-container">DESATIVAR</button>
+            </form>
+            {message && <p>{message}</p>}
+          </div>
+        </div>
+
+        {/* Modal Desativar Processo */}
+        <div id="deactivateProcessModal" className="modal">
+          <div className="modal-content">
+            <span id="closeDeactivateModalBtn" className="close">&times;</span>
+            <h1>Desativar Processo</h1>
+            <form onSubmit={(e) => handleDeactivateUser(e, name, setMessage)}>
+              <div className="textfield">
+                <label htmlFor="processoDesativar">Nome do Processo</label>
+                <input
+                  type="text"
+                  placeholder="Nome do Processo"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
