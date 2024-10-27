@@ -140,6 +140,13 @@ export default function Admin() {
           >
             Desativar User
           </button>
+          <button 
+            id="openCreateProcessPage"
+            className="repository-processos"
+            onClick={() => navigate("/criar-processo")}
+          >
+            Criar Processo
+          </button>
         </div>
 
         {/* Modal Cadastrar User */}

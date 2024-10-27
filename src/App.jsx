@@ -8,6 +8,7 @@ import Processos from "./pages/Processos";
 import RecoverPassword from "./pages/RecoverPassword";
 import Repository from "./pages/Repository";
 import PrivateRoute from "./routes/PrivateRoute";
+import CreateProcess from "./pages/CreateProcesss";
 
 // Criação do roteador com as rotas definidas
 const router = createBrowserRouter([
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
         path: '/administração',
         element: <Admin />
       },
+      {
+        path: '/criar-processo',
+        element: <CreateProcess />
+      }
     ]
   }
 ]);
