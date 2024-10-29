@@ -7,6 +7,7 @@ import { handleLogout } from "../functions/handleLogout";
 import "../static/Admin.css";
 import { handleDeactivateUser } from "../functions/handleDeactiveUser";
 import { handleEditUser } from "../functions/handleEditUser";
+import { handleDeactivateProcess } from "../functions/handleDeactiveProcess";
 
 export default function Admin() {
   const [message, setMessage] = useState("");
@@ -35,6 +36,7 @@ export default function Admin() {
     const closeModalBtn = document.getElementById("closeModalBtn");
     const closeEditModalBtn = document.getElementById("closeEditModalBtn");
     const closeDeactivateModalBtn = document.getElementById("closeDeactivateModalBtn");
+    const closeDeactivateProcessModal = document.getElementById("closeDeactivateProcessModal")
 
     const open = (modal) => {
       modal.style.display = "flex";
@@ -47,7 +49,8 @@ export default function Admin() {
     const windowClickHandler = (event) => {
       if (event.target === modal || 
           event.target === editModal || 
-          event.target === deactivateModal) {
+          event.target === deactivateModal ||
+          event.target === deactivateProcessModal) {
         event.target.style.display = "none";
       }
     };
@@ -60,18 +63,20 @@ export default function Admin() {
     closeModalBtn.addEventListener("click", () => close(modal));
     closeEditModalBtn.addEventListener("click", () => close(editModal));
     closeDeactivateModalBtn.addEventListener("click", () => close(deactivateModal));
-    deactivateProcessModal.addEventListener("click", () => close(deactivateProcessModal))
+    closeDeactivateProcessModal.addEventListener("click", () => close(deactivateProcessModal))
 
     window.addEventListener("click", windowClickHandler);
 
     return () => {
-      openModalBtn.removeEventListener("click", () => open(modal));
-      openEditModalBtn.removeEventListener("click", () => open(editModal));
-      openDeactivateModalBtn.removeEventListener("click", () => open(deactivateModal));
+          openModalBtn.removeEventListener("click", () => open(modal));
+          openEditModalBtn.removeEventListener("click", () => open(editModal));
+          openDeactivateModalBtn.removeEventListener("click", () => open(deactivateModal));
+          openDeactivateProcessModalBtn.addEventListener("click", () => open(deactivateProcessModal))
 
-      closeModalBtn.removeEventListener("click", () => close(modal));
-      closeEditModalBtn.removeEventListener("click", () => close(editModal));
-      closeDeactivateModalBtn.removeEventListener("click", () => close(deactivateModal));
+          closeModalBtn.removeEventListener("click", () => close(modal));
+          closeEditModalBtn.removeEventListener("click", () => close(editModal));
+          closeDeactivateModalBtn.removeEventListener("click", () => close(deactivateModal));
+          closeDeactivateProcessModal.addEventListener("click", () => close(deactivateProcessModal))
       
       window.removeEventListener("click", windowClickHandler);
     };
@@ -148,7 +153,7 @@ export default function Admin() {
             id="openDeactivateProcessModalBtn"
             className="repository-processos"
           >
-            Desativar Process
+            Desativar Processo
           </button>
           <button 
             id="openCreateProcessPage"
@@ -285,9 +290,9 @@ export default function Admin() {
         {/* Modal Desativar Processo */}
         <div id="deactivateProcessModal" className="modal">
           <div className="modal-content">
-            <span id="closeDeactivateModalBtn" className="close">&times;</span>
+            <span id="closeDeactivateProcessModal" className="close">&times;</span>
             <h1>Desativar Processo</h1>
-            <form onSubmit={(e) => handleDeactivateUser(e, name, setMessage)}>
+            <form onSubmit={(e) => handleDeactivateProcess(e, name, setMessage)}>
               <div className="textfield">
                 <label htmlFor="processoDesativar">Nome do Processo</label>
                 <input
