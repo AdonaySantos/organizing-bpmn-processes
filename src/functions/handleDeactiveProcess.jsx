@@ -1,12 +1,12 @@
 import axios from "axios";
 
 // Função para lidar com a desativação do usuário
-export const handleDeactivateProcess = async (e, nome, setMessage) => {
+export const handleDeactivateProcess = async (e, name, setMessage) => {
     e.preventDefault(); // Impede o comportamento padrão de recarregar a página
 
     try {
         const response = await axios.put('https://backend-southstar.onrender.com/desativar-processo',{
-            nome,
+            name,
         });
         setMessage(response.data); // Atualiza a mensagem de sucesso
         console.log("Deu bom Porraaaaaaaaaaaa!!!!!!!!");

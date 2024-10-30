@@ -70,8 +70,8 @@ export default function Admin() {
     return () => {
           openModalBtn.removeEventListener("click", () => open(modal));
           openEditModalBtn.removeEventListener("click", () => open(editModal));
-          openDeactivateModalBtn.removeEventListener("click", () => open(deactivateModal));
-          openDeactivateProcessModalBtn.addEventListener("click", () => open(deactivateProcessModal))
+          openDeactivateModalBtn.removeEventListener("click", () => open(deactivateModal) && setName(null));
+          openDeactivateProcessModalBtn.addEventListener("click", () => open(deactivateProcessModal) && setName(null))
 
           closeModalBtn.removeEventListener("click", () => close(modal));
           closeEditModalBtn.removeEventListener("click", () => close(editModal));

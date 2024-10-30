@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
 import "../static/CreateProcess.css";
 import axios from "axios";
 import Header from "../components/Header";
@@ -7,6 +7,7 @@ import { handleAdminArea } from "../functions/handleAdminArea";
 import { handleLogout } from "../functions/handleLogout";
 
 export default function CreateProcess() {
+  const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [fileError, setFileError] = useState("");
   const [docError, setDocError] = useState("");
@@ -120,33 +121,52 @@ export default function CreateProcess() {
     e.preventDefault();
 
     if (!processData.diagrama) {
-      setFileError("Por favor, faça o upload de um diagrama.");
-      return;
+        setFileError("Por favor, faça o upload de um diagrama.");
+        return;
     }
 
     const formData = new FormData();
     formData.append("nome", processData.nome);
+    console.log(processData.nome)
     formData.append("numero", processData.numero);
+    console.log(processData.numero)
     formData.append("descricao", processData.descricao);
+    console.log(processData.descricao)
     formData.append("categoria", processData.categoria.toLowerCase());
+    console.log(processData.categoria.toLowerCase())
     formData.append("processoMain", processData.processoMain);
+    console.log(processData.processoMain)
     formData.append("cadeia", processData.cadeia);
-    formData.append("departamentos", JSON.stringify(processData.departamentos));
+    console.log(processData.cadeia)
+
+    processData.departamentos.forEach(dep => formData.append("departamentos", dep));
+    console.log(processData.departamentos)
+
+    console.log(processData)
+
     formData.append("diagrama", processData.diagrama);
     if (processData.documento) formData.append("documento", processData.documento);
 
+    console.log(JSON.stringify(formData))
+
     try {
-      const response = await axios.post(
-        "https://backend-southstar.onrender.com/processos",
-        formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
-      console.log(response.data);
+        const response = await axios.post(
+            "https://backend-southstar.onrender.com/processos",
+            formData,
+            {
+              headers: {
+                  "Authorization": `Bearer ${localStorage.getItem("authToken")}`,
+                  "Content-Type": "multipart/form-data"
+              }
+          }
+        );
+        setMessage(response.data.message || "Processo criado com sucesso!");
+        setError("");
     } catch (error) {
-      console.error("Erro ao criar processo:", error);
-      setError("Erro ao criar processo. Tente novamente.");
+        console.log("Erro ao criar processo:", error);
+        setError(error.response?.data?.message || "Erro ao criar processo. Tente novamente.");
     }
-  };
+};
 
   return (
     <>
@@ -292,8 +312,9 @@ export default function CreateProcess() {
             Criar Processo
           </button>
         </form>
+        {message && <p>{message}</p>}
+        {error && <p className="error">{error}</p>}
       </div>
-      {error && <p className="error">{error}</p>}
     </>
   );
 }
