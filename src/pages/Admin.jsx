@@ -11,13 +11,26 @@ import { handleDeactivateProcess } from "../functions/handleDeactiveProcess";
 
 export default function Admin() {
   const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [permission, setPermission] = useState("");
   const [newUserName, setNewUserName] = useState(""); // Novo nome
   const [newPassword, setNewPassword] = useState(""); // Nova senha
   const [newPermission, setNewPermission] = useState(""); // Nova permissão
+  const [processName, setProcessName] = useState(""); // Nome do processo para reativar
+
+  // Novos estados para editar processo
+  const [currentProcessName, setCurrentProcessName] = useState(""); // Nome atual do processo
+  const [newProcessName, setNewProcessName] = useState(""); // Novo nome do processo
+  const [currentProcessNumber, setCurrentProcessNumber] = useState(""); // Número atual do processo
+  const [newProcessNumber, setNewProcessNumber] = useState(""); // Novo número do processo
+  const [isPartOfChain, setIsPartOfChain] = useState(false); // Indica se o processo está em uma cadeia
+  const [currentChainName, setCurrentChainName] = useState(""); // Nome da cadeia atual
+  const [newChainName, setNewChainName] = useState(""); // Novo nome da cadeia
+  const [currentProcessDescription, setCurrentProcessDescription] = useState(""); // Descrição atual do processo
+  const [newProcessDescription, setNewProcessDescription] = useState(""); // Nova descrição do processo
+  const [processType, setProcessType] = useState("Departamental"); // Tipo do processo (Departamental ou Interdepartamental)
+  const [selectedDepartments, setSelectedDepartments] = useState([]); // Departamentos selecionados
 
 
   const navigate = useNavigate();
@@ -27,16 +40,22 @@ export default function Admin() {
     const editModal = document.getElementById("editModal");
     const deactivateModal = document.getElementById("deactivateModal");
     const deactivateProcessModal = document.getElementById("deactivateProcessModal")
+    const reactivateProcessModal = document.getElementById("reactivateProcessModal")
+    const editProcessModal = document.getElementById("editProcessModal")
 
     const openModalBtn = document.getElementById("openModalBtn");
     const openEditModalBtn = document.getElementById("openEditModalBtn");
     const openDeactivateModalBtn = document.getElementById("openDeactivateModalBtn");
     const openDeactivateProcessModalBtn = document.getElementById("openDeactivateProcessModalBtn")
+    const openReactivateProcessModalBtn = document.getElementById("openReactivateProcessModalBtn")
+    const openEditProcessModalBtn = document.getElementById("openEditProcessModalBtn")
 
     const closeModalBtn = document.getElementById("closeModalBtn");
     const closeEditModalBtn = document.getElementById("closeEditModalBtn");
     const closeDeactivateModalBtn = document.getElementById("closeDeactivateModalBtn");
     const closeDeactivateProcessModal = document.getElementById("closeDeactivateProcessModal")
+    const closeReactivateProcessModal = document.getElementById("closeReactivateProcessModal")
+    const closeEditProcessModalBtn = document.getElementById("closeEditProcessModalBtn")
 
     const open = (modal) => {
       modal.style.display = "flex";
@@ -50,7 +69,9 @@ export default function Admin() {
       if (event.target === modal || 
           event.target === editModal || 
           event.target === deactivateModal ||
-          event.target === deactivateProcessModal) {
+          event.target === deactivateProcessModal ||
+          event.target === reactivateProcessModal ||
+          event.target === editProcessModal) {
         event.target.style.display = "none";
       }
     };
@@ -59,24 +80,32 @@ export default function Admin() {
     openEditModalBtn.addEventListener("click", () => open(editModal));
     openDeactivateModalBtn.addEventListener("click", () => open(deactivateModal));
     openDeactivateProcessModalBtn.addEventListener("click", () => open(deactivateProcessModal))
+    openReactivateProcessModalBtn.addEventListener("click", () => open(reactivateProcessModal))
+    openEditProcessModalBtn.addEventListener("click", () => open(editProcessModal))
 
     closeModalBtn.addEventListener("click", () => close(modal));
     closeEditModalBtn.addEventListener("click", () => close(editModal));
     closeDeactivateModalBtn.addEventListener("click", () => close(deactivateModal));
-    closeDeactivateProcessModal.addEventListener("click", () => close(deactivateProcessModal))
+    closeDeactivateProcessModal.addEventListener("click", () => close(deactivateProcessModal));
+    closeReactivateProcessModal.addEventListener("click", () => close(reactivateProcessModal))
+    closeEditProcessModalBtn.addEventListener("click", () => close(editProcessModal));
 
     window.addEventListener("click", windowClickHandler);
 
     return () => {
           openModalBtn.removeEventListener("click", () => open(modal));
           openEditModalBtn.removeEventListener("click", () => open(editModal));
-          openDeactivateModalBtn.removeEventListener("click", () => open(deactivateModal) && setName(null));
-          openDeactivateProcessModalBtn.addEventListener("click", () => open(deactivateProcessModal) && setName(null))
+          openDeactivateModalBtn.removeEventListener("click", () => open(deactivateModal) && setName(""));
+          openDeactivateProcessModalBtn.removeEventListener("click", () => open(deactivateProcessModal) && setName(""))
+          openReactivateProcessModalBtn.removeEventListener("click", () => open(reactivateProcessModal))
+          openEditProcessModalBtn.removeEventListener("click", () => open(editProcessModal))
 
           closeModalBtn.removeEventListener("click", () => close(modal));
           closeEditModalBtn.removeEventListener("click", () => close(editModal));
           closeDeactivateModalBtn.removeEventListener("click", () => close(deactivateModal));
-          closeDeactivateProcessModal.addEventListener("click", () => close(deactivateProcessModal))
+          closeDeactivateProcessModal.removeEventListener("click", () => close(deactivateProcessModal))
+          closeReactivateProcessModal.removeEventListener("click", () => close(reactivateProcessModal))
+          closeEditProcessModalBtn.removeEventListener("click", () => close(editProcessModal));
       
       window.removeEventListener("click", windowClickHandler);
     };
@@ -100,7 +129,6 @@ export default function Admin() {
           }
         );
       } catch (error) {
-        setError(error.response?.data?.message || "Acesso negado");
         navigate("/"); // Redireciona para a página inicial em caso de erro ou falta de permissão
       }
     };
@@ -115,6 +143,24 @@ export default function Admin() {
     },
     { nome: "Sair", handleClick: () => handleLogout(navigate) },
   ];
+
+  // Função para gerenciar a mudança de departamento
+  const handleDepartmentChange = (e) => {
+    const { value, checked } = e.target;
+    if (checked) {
+      setSelectedDepartments((prev) => [...prev, value]);
+    } else {
+      setSelectedDepartments((prev) => prev.filter((dept) => dept !== value));
+    }
+  };
+
+  const handleProcessTypeChange = (e) => {
+    const selectedType = e.target.value;
+    setProcessType(selectedType);
+    if (selectedType === "Departamental" && selectedDepartments.length > 1) {
+      setSelectedDepartments([]);
+    }
+  };
 
   return (
     <>
@@ -161,6 +207,18 @@ export default function Admin() {
             onClick={() => navigate("/criar-processo")}
           >
             Criar Processo
+          </button>
+          <button 
+            id="openReactivateProcessModalBtn" 
+            className="repository-processos"
+            >
+              Reativar Processo
+          </button>
+          <button 
+            id="openEditProcessModalBtn"
+            className="repository-processos"
+          >
+            Editar Processo
           </button>
         </div>
 
@@ -306,6 +364,141 @@ export default function Admin() {
               <button type="submit" className="button-right-container">DESATIVAR</button>
             </form>
             {message && <p>{message}</p>}
+          </div>
+        </div>
+
+       {/* Modal Reativar Processo */}
+       <div id="reactivateProcessModal" className="modal">
+          <div className="modal-content">
+            <span id="closeReactivateProcessModal" className="close">&times;</span>
+            <h1>Reativar Processo</h1>
+            <form>
+              <div className="textfield">
+                <label htmlFor="processoReativar">Nome do Processo</label>
+                <input
+                  type="text"
+                  placeholder="Nome do Processo"
+                  value={processName}
+                  onChange={(e) => setProcessName(e.target.value)}
+                  required
+                />
+              </div>
+              <button type="submit" className="button-right-container">ATIVAR</button>
+            </form>
+            {message && <p>{message}</p>}
+          </div>
+        </div>
+
+        {/* Modal para editar processo */}
+        <div id="editProcessModal" className="modal">
+          <div className="modal-content">
+            <span id="closeEditProcessModalBtn" className="close">
+              &times;
+            </span>
+            <h2>Editar Processo</h2>
+            <form>
+              <label>Nome Atual do Processo:</label>
+                <input
+                  type="text"
+                  value={currentProcessName}
+                  onChange={(e) => setCurrentProcessName(e.target.value)}
+                />
+              
+              <label>
+                Novo Nome do Processo:
+                <input
+                  type="text"
+                  value={newProcessName}
+                  onChange={(e) => setNewProcessName(e.target.value)}
+                />
+              </label>
+              <label>
+                Número Atual do Processo:
+                <input
+                  type="text"
+                  value={currentProcessNumber}
+                  onChange={(e) => setCurrentProcessNumber(e.target.value)}
+                />
+              </label>
+              <label>
+                Novo Número do Processo:
+                <input
+                  type="text"
+                  value={newProcessNumber}
+                  onChange={(e) => setNewProcessNumber(e.target.value)}
+                />
+              </label>
+              <label>
+                Está em uma cadeia de processos?
+                <select
+                  value={isPartOfChain}
+                  onChange={(e) => setIsPartOfChain(e.target.value === "true")}
+                >
+                  <option value="false">Não</option>
+                  <option value="true">Sim</option>
+                </select>
+              </label>
+              {isPartOfChain && (
+                <>
+                  <label>
+                    Nome da Cadeia Atual:
+                    <input
+                      type="text"
+                      value={currentChainName}
+                      onChange={(e) => setCurrentChainName(e.target.value)}
+                    />
+                  </label>
+                  <label>
+                    Novo Nome da Cadeia:
+                    <input
+                      type="text"
+                      value={newChainName}
+                      onChange={(e) => setNewChainName(e.target.value)}
+                    />
+                  </label>
+                </>
+              )}
+              <label>
+                Descrição Atual do Processo:
+                <textarea
+                  value={currentProcessDescription}
+                  onChange={(e) => setCurrentProcessDescription(e.target.value)}
+                />
+              </label>
+              <label>
+                Nova Descrição do Processo:
+                <textarea
+                  value={newProcessDescription}
+                  onChange={(e) => setNewProcessDescription(e.target.value)}
+                />
+              </label>
+              <label>
+                Tipo de Processo:
+                <select value={processType} onChange={handleProcessTypeChange}>
+                  <option value="Departamental">Departamental</option>
+                  <option value="Interdepartamental">Interdepartamental</option>
+                </select>
+              </label>
+              {processType === "Interdepartamental" && (
+                <div>
+                  <label>
+                    Selecionar Departamentos:
+                    {["Financeiro", "RH", "Vendas", "TI"].map((dept) => (
+                      <label key={dept}>
+                        <input
+                          type="checkbox"
+                          value={dept}
+                          checked={selectedDepartments.includes(dept)}
+                          onChange={handleDepartmentChange}
+                        />
+                        {dept}
+                      </label>
+                    ))}
+                  </label>
+                </div>
+              )}
+              <button type="submit">Salvar Alterações</button>
+            </form>
           </div>
         </div>
       </div>
