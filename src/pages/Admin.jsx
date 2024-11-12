@@ -7,6 +7,7 @@ import { handleLogout } from "../functions/handleLogout";
 import "../static/Admin.css";
 import { handleDeactivateUser } from "../functions/handleDeactiveUser";
 import { handleEditUser } from "../functions/handleEditUser";
+import { handleEditProcess } from "../functions/hanleEditProcess";
 import { handleDeactivateProcess } from "../functions/handleDeactiveProcess";
 import { handleReactivateProcess } from "../functions/handleReactivateProcess";
 
@@ -20,7 +21,8 @@ export default function Admin() {
   const [newPermission, setNewPermission] = useState(""); // Nova permissão
   const [processName, setProcessName] = useState(""); // Nome do processo para reativar
 
-  // Novos estados para editar processo
+  // Estados para editar processo
+  // Estados para editar processo
   const [currentProcessName, setCurrentProcessName] = useState(""); // Nome atual do processo
   const [newProcessName, setNewProcessName] = useState(""); // Novo nome do processo
   const [newProcessNumber, setNewProcessNumber] = useState(""); // Novo número do processo
@@ -29,7 +31,6 @@ export default function Admin() {
   const [newProcessDescription, setNewProcessDescription] = useState(""); // Nova descrição do processo
   const [processType, setProcessType] = useState("Departamental"); // Tipo do processo (Departamental ou Interdepartamental)
   const [selectedDepartments, setSelectedDepartments] = useState([]); // Departamentos selecionados
-  const [processLevel, setProcessLevel] = useState("Processo");
 
   // Novos estados para criar processo
   const [error, setError] = useState("");
@@ -346,6 +347,7 @@ export default function Admin() {
     processData.departamentos.forEach((dep) =>
       formData.append("departamentos", dep)
     );
+    console.log(processData.departamentos)
 
     formData.append("diagrama", processData.diagrama);
     if (processData.documento)
@@ -781,7 +783,22 @@ export default function Admin() {
               &times;
             </span>
             <h1>Editar Processo</h1>
-            <form className="process-form">
+            <form
+              onSubmit={(e) =>
+                handleEditProcess(
+                  e,
+                  currentProcessName,
+                  newProcessName,
+                  newProcessNumber,
+                  newChainName,
+                  newProcessDescription,
+                  selectedDepartments,
+                  processData.categoria,
+                  processData.processoMain,
+                  setMessage
+                )
+              }
+            >
               <div className="textfield">
                 <label>Nome Atual do Processo:</label>
                 <input

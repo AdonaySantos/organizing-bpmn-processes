@@ -164,6 +164,7 @@ export default function Repository() {
         </div>
 
         <div className="repository-processos-list">
+          {loading && <p>Carregando...</p>}
           {error && <p className="repository-error-message">{error}</p>}
           {viewMode === "processos" && error && (
             <p className="repository-error-message">{error}</p>
