@@ -1,13 +1,13 @@
 export const handleSearch = async (
   searchTerm,
-  setProcessos,
+  setProcessosPeaquisados,
   setLoading,
   setError
 ) => {
   const authToken = localStorage.getItem("authToken");
   setLoading(true);
   setError("");
-  setProcessos([]);
+  setProcessosPeaquisados([]);
 
   try {
     const response = await fetch(
@@ -25,7 +25,7 @@ export const handleSearch = async (
     }
 
     const data = await response.json();
-    setProcessos(data);
+    setProcessosPeaquisados(data);
     setError(null);
   } catch (error) {
     console.error("Erro ao buscar processos:", error.message);

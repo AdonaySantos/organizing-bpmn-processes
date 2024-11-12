@@ -13,11 +13,14 @@ import { handleGetProcessos } from "../functions/handleGetProcessos";
 import { handleLogout } from "../functions/handleLogout";
 import { handleSearch } from "../functions/handleSearch";
 import { toggleViewMode } from "../functions/toggleViewMode";
+import { handleGetSubProcess } from "../functions/handleGetSubProcess"
 import "../static/Repository.css";
 
 export default function Repository() {
   const navigate = useNavigate();
   const [processos, setProcessos] = useState([]);
+  const [processosPesquisados, setProcessosPeaquisados] = useState([]);
+  const [subprocessos, setSubprocessos] = useState([]);
   const [cadeiasProcessos, setCadeiasProcessos] = useState([]);
   const [interdepartamentais, setInterdepartamentais] = useState([]);
   const [inativos, setInativos] = useState([]);
@@ -32,6 +35,8 @@ export default function Repository() {
     if (!authToken) {
       navigate("/");
     } else {
+      handleGetSubProcess(setSubprocessos, setError, setLoading)
+      handleSearch(searchTerm, setProcessosPeaquisados, setError, setLoading)
       handleGetProcessos(setProcessos, setLoading, setError);
       handleGetCadeias(setCadeiasProcessos, setLoading, setError);
       handleGetInativos(setInativos, setLoading, setError);
@@ -73,9 +78,7 @@ export default function Repository() {
           <button
             className="repository-search-button"
             aria-label="Buscar"
-            onClick={() =>
-              handleSearch(searchTerm, setProcessos, setError, setLoading)
-            }
+            onClick={() => toggleViewMode("search", setViewMode)}
           >
             <FontAwesomeIcon icon={faSearch} />
           </button>
@@ -112,10 +115,55 @@ export default function Repository() {
           >
             Cadeias
           </button>
+          <button
+            onClick={() => toggleViewMode("subprocessos", setViewMode)}
+            className="repository-processos"
+          >
+            Subprocessos
+          </button>
         </div>
 
         <div className="repository-processos-list">
-          {loading && <p>Carregando...</p>}
+          {error && <p className="repository-error-message">{error}</p>}
+          {viewMode === "subprocessos" && error && (
+            <p className="repository-error-message">{error}</p>
+          )}
+          {viewMode === "subprocessos" && subprocessos.length > 0 ? (
+            <div className="repository-processos-cards">
+              {subprocessos.map((subprocesso) => (
+                <ProcessCard
+                  key={subprocesso.id}
+                  processo={subprocesso}
+                  handleClick={handleProcessClick}
+                />
+              ))}
+            </div>
+          ) : (
+            !loading
+          )}
+        </div>
+
+        <div className="repository-processos-list">
+          {error && <p className="repository-error-message">{error}</p>}
+          {viewMode === "search" && error && (
+            <p className="repository-error-message">{error}</p>
+          )}
+          {viewMode === "search" && processosPesquisados.length > 0 ? (
+            <div className="repository-processos-cards">
+              {processosPesquisados.map((processo) => (
+                <ProcessCard
+                  key={processo.id}
+                  processo={processo}
+                  handleClick={handleProcessClick}
+                />
+              ))}
+            </div>
+          ) : (
+            !loading
+          )}
+        </div>
+
+        <div className="repository-processos-list">
           {error && <p className="repository-error-message">{error}</p>}
           {viewMode === "processos" && error && (
             <p className="repository-error-message">{error}</p>
