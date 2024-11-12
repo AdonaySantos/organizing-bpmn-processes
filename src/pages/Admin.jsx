@@ -29,6 +29,23 @@ export default function Admin() {
   const [newProcessDescription, setNewProcessDescription] = useState(""); // Nova descrição do processo
   const [processType, setProcessType] = useState("Departamental"); // Tipo do processo (Departamental ou Interdepartamental)
   const [selectedDepartments, setSelectedDepartments] = useState([]); // Departamentos selecionados
+  const [processLevel, setProcessLevel] = useState("Processo");
+
+  // Novos estados para criar processo
+  const [error, setError] = useState("");
+  const [fileError, setFileError] = useState("");
+  const [docError, setDocError] = useState("");
+  const [processData, setProcessData] = useState({
+    nome: "",
+    numero: "",
+    descricao: "",
+    categoria: "processo", // Estado para Processo/Subprocesso
+    processoMain: "", // Nome do processo pai, se for subprocesso
+    cadeia: "", // Nome da cadeia de processos vinculada
+    departamentos: [],
+    diagrama: null,
+    documento: null,
+  });
 
   const navigate = useNavigate();
 
@@ -43,6 +60,7 @@ export default function Admin() {
       "reactivateProcessModal"
     );
     const editProcessModal = document.getElementById("editProcessModal");
+    const createProcessModal = document.getElementById("createProcessModal");
 
     const openModalBtn = document.getElementById("openModalBtn");
     const openEditModalBtn = document.getElementById("openEditModalBtn");
@@ -58,6 +76,9 @@ export default function Admin() {
     const openEditProcessModalBtn = document.getElementById(
       "openEditProcessModalBtn"
     );
+    const openCreateProcessModalBtn = document.getElementById(
+      "openCreateProcessModalBtn"
+    );
 
     const closeModalBtn = document.getElementById("closeModalBtn");
     const closeEditModalBtn = document.getElementById("closeEditModalBtn");
@@ -72,6 +93,9 @@ export default function Admin() {
     );
     const closeEditProcessModalBtn = document.getElementById(
       "closeEditProcessModalBtn"
+    );
+    const closeCreateProcessModalBtn = document.getElementById(
+      "closeCreateProcessModalBtn"
     );
 
     const open = (modal) => {
@@ -89,7 +113,8 @@ export default function Admin() {
         event.target === deactivateModal ||
         event.target === deactivateProcessModal ||
         event.target === reactivateProcessModal ||
-        event.target === editProcessModal
+        event.target === editProcessModal ||
+        event.target === createProcessModal
       ) {
         event.target.style.display = "none";
       }
@@ -109,6 +134,9 @@ export default function Admin() {
     openEditProcessModalBtn.addEventListener("click", () =>
       open(editProcessModal)
     );
+    openCreateProcessModalBtn.addEventListener("click", () =>
+      open(createProcessModal)
+    );
 
     closeModalBtn.addEventListener("click", () => close(modal));
     closeEditModalBtn.addEventListener("click", () => close(editModal));
@@ -123,6 +151,9 @@ export default function Admin() {
     );
     closeEditProcessModalBtn.addEventListener("click", () =>
       close(editProcessModal)
+    );
+    closeCreateProcessModalBtn.addEventListener("click", () =>
+      close(createProcessModal)
     );
 
     window.addEventListener("click", windowClickHandler);
@@ -144,6 +175,9 @@ export default function Admin() {
       openEditProcessModalBtn.removeEventListener("click", () =>
         open(editProcessModal)
       );
+      openCreateProcessModalBtn.removeEventListener("click", () =>
+        open(createProcessModal)
+      );
 
       closeModalBtn.removeEventListener("click", () => close(modal));
       closeEditModalBtn.removeEventListener("click", () => close(editModal));
@@ -158,6 +192,9 @@ export default function Admin() {
       );
       closeEditProcessModalBtn.removeEventListener("click", () =>
         close(editProcessModal)
+      );
+      closeCreateProcessModalBtn.removeEventListener("click", () =>
+        close(createProcessModal)
       );
 
       window.removeEventListener("click", windowClickHandler);
@@ -230,6 +267,112 @@ export default function Admin() {
     }
   };
 
+  //Parte que estava na criação dos processos
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setProcessData((prev) => ({
+      ...prev,
+      [name]: value,
+      departamentos:
+        name === "tipo" && value === "Departamental" ? [] : prev.departamentos,
+    }));
+  };
+
+  const handleCheckboxChange = (e) => {
+    const { value, checked } = e.target;
+    setProcessData((prev) => {
+      const departamentos = checked
+        ? [...prev.departamentos, value]
+        : prev.departamentos.filter((dep) => dep !== value);
+      return { ...prev, departamentos };
+    });
+  };
+
+  const handleFileChange = (e, type) => {
+    const file = e.target.files[0];
+
+    console.log("oi");
+    if (type === "diagrama") {
+      console.log("oi2");
+      if (file && !["image/jpeg", "image/png"].includes(file.type)) {
+        setFileError("Formato inválido. Apenas JPEG e PNG são permitidos.");
+        return;
+      }
+    } else if (type === "documento") {
+      if (
+        file &&
+        ![
+          "application/pdf",
+          "application/msword",
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        ].includes(file.type)
+      ) {
+        console.log("oi3");
+        setDocError("Formato inválido. Apenas PDF e WORD são permitidos.");
+        return;
+      }
+    }
+
+    if (file && file.size > 3 * 1024 * 1024) {
+      const errorMessage = "O arquivo é muito grande. O tamanho máximo é 3MB.";
+      type === "diagrama"
+        ? setFileError(errorMessage)
+        : setDocError(errorMessage);
+      return;
+    }
+
+    setFileError("");
+    setDocError("");
+    setProcessData((prev) => ({ ...prev, [type]: file }));
+    console.log("deuboom");
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!processData.diagrama) {
+      setFileError("Por favor, faça o upload de um diagrama.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("nome", processData.nome);
+    formData.append("numero", processData.numero);
+    formData.append("descricao", processData.descricao);
+    formData.append("categoria", processData.categoria.toLowerCase());
+    formData.append("processoMain", processData.processoMain);
+    formData.append("cadeia", processData.cadeia);
+
+    processData.departamentos.forEach((dep) =>
+      formData.append("departamentos", dep)
+    );
+
+    formData.append("diagrama", processData.diagrama);
+    if (processData.documento)
+      formData.append("documento", processData.documento);
+
+    try {
+      const response = await axios.post(
+        "https://backend-southstar.onrender.com/processos",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      setMessage(response.data.message || "Processo criado com sucesso!");
+      setError("");
+    } catch (error) {
+      console.log("Erro ao criar processo:", error);
+      setError(
+        error.response?.data?.message ||
+          "Erro ao criar processo. Tente novamente."
+      );
+    }
+  };
+
   return (
     <>
       <header className="header">
@@ -261,9 +404,8 @@ export default function Admin() {
             Desativar Processo
           </button>
           <button
-            id="openCreateProcessPage"
+            id="openCreateProcessModalBtn"
             className="repository-processos"
-            onClick={() => navigate("/criar-processo")}
           >
             Criar Processo
           </button>
@@ -449,6 +591,159 @@ export default function Admin() {
           </div>
         </div>
 
+        {/* Modal para criar processo */}
+        <div id="createProcessModal" className="modal">
+          <div className="modal-content">
+            <span id="closeCreateProcessModalBtn" className="close">
+              &times;
+            </span>
+            <h1>Criar Processo</h1>
+            <form onSubmit={handleSubmit} className="process-form">
+              <div className="textfield">
+                <label>Nome do Processo:</label>
+                <input
+                  type="text"
+                  name="nome"
+                  value={processData.nome}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="textfield">
+                <label>Número do Processo:</label>
+                <input
+                  type="text"
+                  name="numero"
+                  value={processData.numero}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="textfield">
+                <label>Categoria:</label>
+                <select
+                  name="categoria"
+                  value={processData.categoria}
+                  onChange={handleChange}
+                >
+                  <option value="Processo">Processo</option>
+                  <option value="Subprocesso">Subprocesso</option>
+                </select>
+              </div>
+              <div className="textfield">
+                {processData.categoria === "Subprocesso" && (
+                  <>
+                    <label className="chain">Processo Main:</label>
+                    <input
+                      type="text"
+                      name="processoMain"
+                      value={processData.processoMain}
+                      onChange={handleChange}
+                      required
+                    />
+                  </>
+                )}
+              </div>
+              <div className="textfield">
+                <label>Está em uma cadeia de processos?</label>
+                <select
+                  name="pertenceCadeia"
+                  value={processData.pertenceCadeia}
+                  onChange={handleChange}
+                >
+                  <option value="Não">Não</option>
+                  <option value="Sim">Sim</option>
+                </select>
+                {processData.pertenceCadeia === "Sim" && (
+                  <>
+                    <label className="chain">Nome da Cadeia:</label>
+                    <input
+                      type="text"
+                      name="cadeia"
+                      value={processData.cadeia}
+                      onChange={handleChange}
+                      required
+                    />
+                  </>
+                )}
+              </div>
+              <div className="textfield">
+                <label>Descrição do Processo:</label>
+                <textarea
+                  name="descricao"
+                  value={processData.descricao}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="textfield">
+                <label>Tipo de Processo:</label>
+                <select
+                  name="tipo"
+                  value={processData.tipo}
+                  onChange={handleChange}
+                >
+                  <option value="Departamental">Departamental</option>
+                  <option value="Interdepartamental">Interdepartamental</option>
+                </select>
+                <div>
+                  <label>
+                    <fieldset>
+                      <legend>Selecionar Departamentos</legend>
+                      {["Financeiro", "RH", "Vendas", "TI"].map((dep) => (
+                        <label key={dep} className="checkbox-label">
+                          <input
+                            type="checkbox"
+                            value={dep}
+                            checked={processData.departamentos.includes(dep)}
+                            onChange={handleCheckboxChange}
+                            disabled={
+                              processData.tipo === "Departamental" &&
+                              processData.departamentos.length >= 1 &&
+                              !processData.departamentos.includes(dep)
+                            }
+                          />
+                          <span>
+                            <span className="custom-checkbox" />
+                          </span>
+                          {dep}
+                        </label>
+                      ))}
+                    </fieldset>
+                  </label>
+                </div>
+              </div>
+              <div className="diagram-button">
+                <label className="upload-btn">
+                  Upload do Diagrama
+                  <input
+                    type="file"
+                    accept=".jpeg, .jpg, .png"
+                    onChange={(e) => handleFileChange(e, "diagrama")}
+                  />
+                </label>
+              </div>
+              {fileError && <p className="error">{fileError}</p>}
+              <div className="document-button">
+                <label className="upload-btn">
+                  Upload do Documento
+                  <input
+                    type="file"
+                    accept=".pdf, .doc, .docx"
+                    onChange={(e) => handleFileChange(e, "documento")}
+                  />
+                </label>
+              </div>
+              {docError && <p className="error">{docError}</p>}
+              <button type="submit" className="Create-btn">
+                Criar
+              </button>
+            </form>
+            {message && <p>{message}</p>}
+            {error && <p className="error">{error}</p>}
+          </div>
+        </div>
+
         {/* Modal Reativar Processo */}
         <div id="reactivateProcessModal" className="modal">
           <div className="modal-content">
@@ -486,7 +781,7 @@ export default function Admin() {
               &times;
             </span>
             <h1>Editar Processo</h1>
-            <form className="edit-process-form">
+            <form className="process-form">
               <div className="textfield">
                 <label>Nome Atual do Processo:</label>
                 <input
@@ -510,6 +805,31 @@ export default function Admin() {
                   value={newProcessNumber}
                   onChange={(e) => setNewProcessNumber(e.target.value)}
                 />
+              </div>
+              <div className="textfield">
+                <label>Categoria:</label>
+                <select
+                  name="categoria"
+                  value={processData.categoria}
+                  onChange={handleChange}
+                >
+                  <option value="Processo">Processo</option>
+                  <option value="Subprocesso">Subprocesso</option>
+                </select>
+              </div>
+              <div className="textfield">
+                {processData.categoria === "Subprocesso" && (
+                  <>
+                    <label className="chain">Processo Main:</label>
+                    <input
+                      type="text"
+                      name="processoMain"
+                      value={processData.processoMain}
+                      onChange={handleChange}
+                      required
+                    />
+                  </>
+                )}
               </div>
               <div className="textfield">
                 <label>Está em uma cadeia de processos?</label>
