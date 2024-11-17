@@ -10,6 +10,7 @@ import { handleEditUser } from "../functions/handleEditUser";
 import { handleEditProcess } from "../functions/hanleEditProcess";
 import { handleDeactivateProcess } from "../functions/handleDeactiveProcess";
 import { handleReactivateProcess } from "../functions/handleReactivateProcess";
+import { getAcessUsers } from "../functions/getAcessUsers";
 
 export default function Admin() {
   const [message, setMessage] = useState("");
@@ -21,7 +22,6 @@ export default function Admin() {
   const [newPermission, setNewPermission] = useState(""); // Nova permissão
   const [processName, setProcessName] = useState(""); // Nome do processo para reativar
 
-  // Estados para editar processo
   // Estados para editar processo
   const [currentProcessName, setCurrentProcessName] = useState(""); // Nome atual do processo
   const [newProcessName, setNewProcessName] = useState(""); // Novo nome do processo
@@ -47,6 +47,9 @@ export default function Admin() {
     diagrama: null,
     documento: null,
   });
+
+  // Novos estados para Tabela/Lista de acesso de usuários
+  const [userAccess, setUserAccess] = useState([]);
 
   const navigate = useNavigate();
 
@@ -211,16 +214,20 @@ export default function Admin() {
           return;
         }
 
+        // Solicita dados administrativos
         const response = await axios.get(
           "https://backend-southstar.onrender.com/administracao",
           {
             headers: {
-              Authorization: token, // Envia o token JWT no cabeçalho
+              Authorization: token,
             },
           }
         );
+
+        // Solicita os dados de acesso de usuários
+        await getAcessUsers(setUserAccess);
       } catch (error) {
-        navigate("/"); // Redireciona para a página inicial em caso de erro ou falta de permissão
+        navigate("/"); // Redireciona para a página inicial em caso de erro
       }
     };
 
@@ -347,7 +354,7 @@ export default function Admin() {
     processData.departamentos.forEach((dep) =>
       formData.append("departamentos", dep)
     );
-    console.log(processData.departamentos)
+    console.log(processData.departamentos);
 
     formData.append("diagrama", processData.diagrama);
     if (processData.documento)
@@ -406,16 +413,16 @@ export default function Admin() {
             Desativar Processo
           </button>
           <button
-            id="openCreateProcessModalBtn"
-            className="repository-processos"
-          >
-            Criar Processo
-          </button>
-          <button
             id="openReactivateProcessModalBtn"
             className="repository-processos"
           >
             Reativar Processo
+          </button>
+          <button
+            id="openCreateProcessModalBtn"
+            className="repository-processos"
+          >
+            Criar Processo
           </button>
           <button id="openEditProcessModalBtn" className="repository-processos">
             Editar Processo
@@ -783,7 +790,7 @@ export default function Admin() {
               &times;
             </span>
             <h1>Editar Processo</h1>
-            <form
+            <form className="process-form"
               onSubmit={(e) =>
                 handleEditProcess(
                   e,
@@ -935,6 +942,76 @@ export default function Admin() {
                 Salvar Alterações
               </button>
             </form>
+            {message && <p>{message}</p>}
+            {error && <p className="error">{error}</p>}
+          </div>
+        </div>
+        <div>
+          
+
+          <div>
+            <div className="tabela">
+              <h2>Acesso de Usuário</h2>
+            </div>
+            <div className="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Tipo de Acesso</th>
+                    <th>Nome</th>
+                    <th>Data de Acesso</th>
+                  </tr>
+                </thead>
+              </table>
+              <div className="table-body-scroll">
+                <table>
+                  <tbody>
+                    {userAccess?.acessUsers &&
+                    userAccess.acessUsers.length > 0 ? (
+                      userAccess.acessUsers.map((user, index) => (
+                        <tr key={index}>
+                          <td>{user.permission}</td>
+                          <td>{user.name}</td>
+                          <td>{user.date}</td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="3">Loading...</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div className="tabela">
+            <h2>Contador de Acessos</h2>
+          </div>
+          <div className="table-container2">
+            <table>
+              <thead>
+                <tr>
+                  <th>Tipo de Acesso</th>
+                  <th>QNTD de Acessos</th>
+                </tr>
+              </thead>
+            </table>
+            <div className="table-body">
+              <table>
+                <tbody>
+                  <tr>
+                    <td>Admins</td>
+                    <td>{userAccess.adminAcess}</td>
+                  </tr>
+                  <tr>
+                    <td>Users</td>
+                    <td>{userAccess.userAcess}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

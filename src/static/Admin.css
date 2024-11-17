@@ -168,3 +168,121 @@ label input[type="file"] {
   margin-top: 30px;
   margin-bottom: 30px;
 }
+
+/* /Titulo das tabelas/ */
+.tabela h2{
+  padding: 20px 0px;
+  text-align: center;
+}
+
+/* Contêiner da tabela com cabeçalhos fixos */
+.table-container {
+  width: 60%; /* Largura total da tabela */
+  overflow: hidden; /* Evita que os cabeçalhos sejam roláveis */
+  border-radius: 8px; /* Bordas arredondadas */
+  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.2); /* Sombra para a tabela */
+  margin: 0 auto; /* Centraliza a tabela na página */
+}
+
+.table-container table {
+  width: 100%; /* Largura total da tabela */
+  border-collapse: collapse; /* Remove o espaçamento entre as bordas das células */
+  background-color: #322A25; /* Cor de fundo */
+  color: white; /* Cor do texto */
+}
+
+.table-container thead th {
+  background-color: #443227; /* Cor de fundo dos cabeçalhos */
+  color: #E8E5E0; /* Cor do texto dos cabeçalhos */
+  text-transform: uppercase; /* Texto em maiúsculas */
+  font-weight: bold; /* Texto em negrito */
+  letter-spacing: 1px; /* Espaçamento entre letras */
+  padding: 12px 40px; /* Espaçamento interno das células */
+  text-align: center; /* Alinhamento centralizado */
+  border-bottom: 1px solid #443227; /* Linha de separação */
+}
+
+.table-body-scroll {
+  max-height: 300px; /* Altura máxima para o corpo da tabela */
+  overflow-y: auto; /* Adiciona a barra de rolagem vertical */
+}
+
+.table-body-scroll table {
+  width: 100%; /* Largura total da tabela */
+  border-collapse: collapse; /* Remove o espaçamento entre as bordas das células */
+}
+
+.table-body-scroll td {
+  padding: 12px 15px; /* Espaçamento interno das células */
+  text-align: center; /* Alinhamento centralizado */
+  border-bottom: 1px solid #443227; /* Linha de separação */
+}
+
+/* Estilo para as linhas do corpo da tabela */
+.table-body-scroll tr:nth-child(odd) {
+  background-color: #2A2521; /* Cor de fundo para linhas ímpares */
+}
+
+.table-body-scroll tr:nth-child(even) {
+  background-color: #221b1b; /* Cor de fundo para linhas pares */
+}
+
+.table-body-scroll tr:hover {
+  background-color: #3B322D; /* Cor de fundo ao passar o mouse */
+}
+
+/* Contêiner da tabela com cabeçalhos fixos */
+.table-container2 {
+  width: 60%; /* Largura total da tabela */
+  overflow: hidden; /* Evita que os cabeçalhos sejam roláveis */
+  border-radius: 8px; /* Bordas arredondadas */
+  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.2); /* Sombra para a tabela */
+  margin: 0 auto; /* Centraliza a tabela na página */
+}
+
+.table-container2 table {
+  width: 100%; /* Largura total da tabela */
+  border-collapse: collapse; /* Remove o espaçamento entre as bordas das células */
+  background-color: #322A25; /* Cor de fundo */
+  color: white; /* Cor do texto */
+}
+
+.table-container2 thead th {
+  background-color: #443227; /* Cor de fundo dos cabeçalhos */
+  color: #E8E5E0; /* Cor do texto dos cabeçalhos */
+  text-transform: uppercase; /* Texto em maiúsculas */
+  font-weight: bold; /* Texto em negrito */
+  letter-spacing: 1px; /* Espaçamento entre letras */
+  padding: 12px 86px; /* Espaçamento interno das células */
+  text-align: center; /* Alinhamento centralizado */
+  border-bottom: 1px solid #443227; /* Linha de separação */
+}
+
+.table-body {
+  max-height: 300px; /* Altura máxima para o corpo da tabela */
+  overflow-y: auto; /* Adiciona a barra de rolagem vertical */
+}
+
+.table-body table {
+  width: 100%; /* Largura total da tabela */
+  border-collapse: collapse; /* Remove o espaçamento entre as bordas das células */
+}
+
+.table-body td {
+  padding: 12px 130px; /* Espaçamento interno das células */
+  text-align: left; /* Alinhamento centralizado */
+  border-bottom: 1px solid #443227; /* Linha de separação */
+}
+
+/* Estilo para as linhas do corpo da tabela */
+.table-body tr:nth-child(odd) {
+  background-color: #2A2521; /* Cor de fundo para linhas ímpares */
+}
+
+.table-body tr:nth-child(even) {
+  background-color: #221b1b; /* Cor de fundo para linhas pares */
+}
+
+.table-body tr:hover {
+  background-color: #3B322D; /* Cor de fundo ao passar o mouse */
+}

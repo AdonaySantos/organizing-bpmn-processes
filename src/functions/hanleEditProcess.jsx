@@ -26,10 +26,10 @@ export const handleEditProcess = async (
             newProcessMain 
         });
         
-        setMessage(response.data); // Atualiza a mensagem de sucesso
+        setMessage(response.data.message);
         console.log("DEU BOM PARTE 9 PORRAAAAAAA");
     } catch (error) {
         console.error("Erro ao editar usuário:", error.message);
-        setMessage('Erro ao editar: ' + (error.response?.data || error.message)); // Exibe a mensagem de erro
+        setMessage('Erro ao editar: ' + (error.response?.data || error.message));
     }
    };

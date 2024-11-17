@@ -35,15 +35,15 @@ export default function Repository() {
     if (!authToken) {
       navigate("/");
     } else {
-      handleGetSubProcess(setSubprocessos, setError, setLoading)
-      handleSearch(searchTerm, setProcessosPeaquisados, setError, setLoading)
+      handleSearch(searchTerm, setProcessosPeaquisados, setLoading, setError);
+      handleGetSubProcess(setSubprocessos, setError, setLoading);
       handleGetProcessos(setProcessos, setLoading, setError);
       handleGetCadeias(setCadeiasProcessos, setLoading, setError);
       handleGetInativos(setInativos, setLoading, setError);
       handleGetDepartamentos(setDepartamentos, setLoading, setError);
       handleGetInterdepartamentos(setInterdepartamentais, setLoading, setError);
     }
-  }, [navigate]);
+  }, [searchTerm, navigate]); 
 
   const buttonsList = [
     { nome: "Administração", handleClick: () => handleAdminArea(navigate) },
